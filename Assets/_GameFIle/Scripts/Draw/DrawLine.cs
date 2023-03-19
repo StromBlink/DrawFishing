@@ -19,7 +19,7 @@ public class DrawLine : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] private bool Fishnet;
    
-    private PolygonCollider2D _polygonCollider;
+    
     Vector3 _currentMousePos;
     Vector3 _lastMousePos;
     Snake _snake;
@@ -27,12 +27,7 @@ public class DrawLine : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         _snake = GetComponent<Snake>();
-        _polygonCollider =_snake.snake.GetComponent<PolygonCollider2D>();
     }
 
     private void Update()
@@ -116,19 +111,7 @@ public class DrawLine : MonoBehaviour
         FishManager.Instance.FishReList();
         FishManager.Instance.EscapeFishes();
         BowlController.Instance.EnumerateFish();
-        if (!Fishnet) _snake.SearchCircle();
+       
     }
-    public void KesisimPolygonHesaplamasi(Vector2 intersectionpoint)
-    {
-        _polygonCollider.pathCount = 0;
-        List<Vector2> vector2s = new List<Vector2>(_snake._cylinlist.Count+2);
-        vector2s.Add(intersectionpoint);
-        for (int i = 0; i < _snake._cylinlist.Count; i++)
-        {
-            vector2s.Add(_snake._cylinlist[i].position);
-        }
-        vector2s.Add(intersectionpoint);
-        _polygonCollider.points = vector2s.ToArray();
-        print("Calisti:KesisimPolygonHesaplamasi");
-    }
+ 
 }

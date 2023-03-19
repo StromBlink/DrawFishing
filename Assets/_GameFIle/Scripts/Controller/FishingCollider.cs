@@ -14,8 +14,8 @@ public class FishingCollider : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.transform.CompareTag("Player"))
-        {  
-          DrawLine.Instance.KesisimPolygonHesaplamasi(transform.position);
+        {
+            CounterCollider(col);
         }
     }
 
@@ -23,5 +23,18 @@ public class FishingCollider : MonoBehaviour
     {
         Vector2[] vector2s=new Vector2[5];
         _polygonCollider.SetPath(5, vector2s);
+    }
+
+    public void CounterCollider(Collision2D col)
+    {
+        int intersectionpointID = col.transform.GetComponent<FishingCollider>().ID;
+        if (ID >intersectionpointID )
+        {
+            Snake.Instance.CalculationPolygon(transform.position,intersectionpointID,ID);
+        }
+        else
+        {
+           Snake.Instance.CalculationPolygon(transform.position,ID,intersectionpointID);
+        }
     }
 }

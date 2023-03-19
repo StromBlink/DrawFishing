@@ -6,21 +6,32 @@ using UnityEngine;
 using DG.Tweening;
 
 public class Snake : MonoBehaviour
-{ 
+{
+    public static Snake Instance;
+    
     [SerializeField] private float snakeSpeed;
     [SerializeField] private float snakeDistance;
     [SerializeField] private float radius;
-    [SerializeField] private List<Rigidbody2D> collidersnakes=new List<Rigidbody2D>(75);
+    
     public Transform snake;
     public List<Transform> _cylinlist;
-    public Collider[] hitColliders;
+    public List<ParticleSystem> _particules;
+   
+    private PolygonCollider2D _polygonCollider;
+
+    private void Awake()
+    {
+        Instance = this;
+        _polygonCollider =GetComponent<PolygonCollider2D>();
+    }
 
     private void Start()
     {
         for (int i = 0; i < snake.childCount-1; ++i)
         {
+            snake.GetChild(i).GetComponent<FishingCollider>().ID = i;
             _cylinlist.Add(snake.GetChild(i));
-            collidersnakes.Add(  _cylinlist[i].GetComponent<Rigidbody2D>());
+             _particules.Add(snake.GetChild(i).GetChild(0).GetChild(0).GetComponent<ParticleSystem>());
         }
     }
 
@@ -45,36 +56,8 @@ public class Snake : MonoBehaviour
     public void SnakeFinish()
     {
         float y = snake.position.y;
-        snake.DOMoveY(y+10,10f).SetEase(Ease.Linear);
+        snake.DOMoveY(y+10,10f).SetEase(Ease.Linear).SetDelay(3);
     }
-    
-   public void SearchCircle( )
-   {   string x = "FishingNet";
-       foreach (var VARIABLE in _cylinlist)
-       {
-           VARIABLE.tag = x;
-       }
-       /*bool sec=false;
-         string x = "FishingNet";
-        for (int i = 0; i < _cylinlist.Count; ++i)
-        {   
-            
-            hitColliders = Physics.OverlapSphere(_cylinlist[i].position, radius);
-            foreach (var hitCollider in hitColliders)
-            {
-                if ( hitCollider.CompareTag("Player") && hitCollider.gameObject!=_cylinlist[i].gameObject )
-                {sec = true;
-                    foreach (var VARIABLE in collidersnakes)
-                    {collidersnakes[i].tag = x;
-                        print("Calisti");
-                        
-                    }
-                   break;
-                }
-            }
-            /*if(sec)  break;#1#
-        }*/
-   }
     public void Follow(Transform _Chaser_gameobject, Transform targetTransform, float speed, float targetDistance)
     {
         Vector3 displacementFromTarget = targetTransform.position - _Chaser_gameobject.transform.position;
@@ -91,5 +74,23 @@ public class Snake : MonoBehaviour
     {
         Vector3 displacementFromTarget = targetTransform.position - _Chaser_gameobject.transform.position;
         _Chaser_gameobject.transform.rotation = Quaternion.LookRotation(displacementFromTarget);
+    }
+    
+    
+    public void CalculationPolygon(Vector2 intersectionpoint,int start, int end)
+    {
+        _polygonCollider.pathCount = 0;
+        List<Vector2> vector2s = new List<Vector2>(_cylinlist.Count+2);
+        vector2s.Add(intersectionpoint);
+        
+        for (int i = start; i < end; i++)
+        {
+            vector2s.Add(_cylinlist[i].position);
+            _particules[i].Play();
+        } 
+        vector2s.Add(intersectionpoint);
+        
+        _polygonCollider.points = vector2s.ToArray();
+        print("Calisti:KesisimPolygonHesaplamasi");
     }
 }
