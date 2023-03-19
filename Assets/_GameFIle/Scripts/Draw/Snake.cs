@@ -12,7 +12,7 @@ public class Snake : MonoBehaviour
     [SerializeField] private float snakeSpeed;
     [SerializeField] private float snakeDistance;
     [SerializeField] private float radius;
-    
+    [SerializeField] private MeshGenerator _meshGenerator;
     public Transform snake;
     public List<Transform> _cylinlist;
     public List<ParticleSystem> _particules;
@@ -84,12 +84,12 @@ public class Snake : MonoBehaviour
         vector2s.Add(intersectionpoint);
         
         for (int i = start; i < end; i++)
-        {
+        {   _meshGenerator.positions.Add(_cylinlist[i].position);
             vector2s.Add(_cylinlist[i].position);
             _particules[i].Play();
         } 
         vector2s.Add(intersectionpoint);
-        
+        _meshGenerator.GenerateMesh();
         _polygonCollider.points = vector2s.ToArray();
         print("Calisti:KesisimPolygonHesaplamasi");
     }
