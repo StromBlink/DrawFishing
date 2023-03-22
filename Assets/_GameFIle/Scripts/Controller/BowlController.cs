@@ -12,20 +12,27 @@ public class BowlController : MonoBehaviour
      
      [SerializeField] private Transform bowlLid;
      [SerializeField] private Transform bowlInside;
- 
-     private float goldFish_2, crapFish_2, phirinaFIsh_2, coralFish_2,money;
+     public List<Transform> catchFishes;
      public Vector3 Moneyscale;
+     
+     public float goldFish_2, crapFish_2, phirinaFIsh_2, coralFish_2,money;
      private bool _isUsedBowl;
      private void Awake()
      {
           Instance = this;
      }
-
      private void Start()
      {
           Moneyscale  = UIManager.Instance.moneyICon.localScale;
      }
 
+     public void FishnetCollect()
+     {
+          for (int i = 0; i < catchFishes.Count; i++)
+          {
+               SpawnFish(catchFishes[i]);
+          }
+     }
      public void SpawnFish(Transform fish)
      {
          UIManager.Instance.bowlFull.fillAmount += 0.1f;
@@ -38,26 +45,21 @@ public class BowlController : MonoBehaviour
           fish.DOMove(bowlLid.position, 1.5f).OnComplete(() =>
           {
                fish.DOMove(transform.position, 0.5f).OnComplete((() => { BowlInsadeFishes(fish,5);}));
-               RandomText();
+               RandomText(fish);
           });
           fish.GetComponent<Rigidbody2D>().simulated = false;
           fish.GetComponent<Rigidbody2D>().drag = 10;
           fish.GetComponent<Rigidbody2D>().angularDrag = 10;
-          fish.SetParent(bowlInside);
-          /*Destroy(fish.GetComponent<Fish>());*/
+          fish.SetParent(bowlInside); 
           FishManager.Instance.FishReList();
-          
      }
-
-      public  void EnumerateFish()
+     public  void EnumerateFish()
      {
           if (UIManager.Instance.pencilFill.fillAmount>0.1f || _isUsedBowl) return;
-          
           StartCoroutine(EnumerateFishStart());
      }
-    
      IEnumerator  EnumerateFishStart()
-     {
+     {  yield return new WaitForSeconds(1f);
           DOTween.KillAll();
           yield return new WaitForSeconds(1f);
           Vector3 target=   Camera.main.transform.position + new Vector3(0,-1,+3);
@@ -73,7 +75,6 @@ public class BowlController : MonoBehaviour
           _isUsedBowl = true;
           UIManager.Instance.Finish();
      }
-
      void BowlInsadeFishes(Transform fish,float duration)
      {
           float x = Random.Range(0,6);
@@ -112,26 +113,21 @@ public class BowlController : MonoBehaviour
 
      }
 
-     void RandomText()
+     void RandomText(Transform fish)
      {
-          int x = Random.Range(0, 4);
-          switch (x)
-          {
-               case  1 :   UIManager.Instance.goldFish.text = goldFish_2.ToString();
-                    goldFish_2++;
-                    break;
-               case 2 :  UIManager.Instance.crapFish.text = crapFish_2.ToString();
-                    crapFish_2++;
-                    break;
-               case  3 :   UIManager.Instance.phirinaFish.text = phirinaFIsh_2.ToString();
-                    phirinaFIsh_2++;
-                    break;
-               case 4 :  UIManager.Instance.coralFish.text = coralFish_2.ToString();
-                    coralFish_2++;
-                    break;
-               
-               
-          }
+          Fish _fish = fish.GetComponent<Fish>();
 
+          switch (_fish.fishTyp)
+          {
+               case  Fish.FishTyp.Goldfish :   UIManager.Instance.goldFish.text = goldFish_2.ToString();
+                    goldFish_2+=1;
+                    break;
+               case  Fish.FishTyp.Crap :   UIManager.Instance.crapFish.text = crapFish_2.ToString();
+                    crapFish_2+=1;
+                    break;
+               case  Fish.FishTyp.Mercan :   UIManager.Instance.coralFish.text = coralFish_2.ToString();
+                    coralFish_2+=1;
+                    break;
+          }
      }
 }

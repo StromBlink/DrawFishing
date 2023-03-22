@@ -27,13 +27,13 @@ public class FishManager : MonoBehaviour
 
      IEnumerator Moving()
      {
-          FishMoved(-5, 50,-5,15);
-          yield return new WaitForSeconds(1.5f);
+          FishMoved(-50, 50,-5,15);
+          yield return new WaitForSeconds(2.9f);
           StartCoroutine(Moving());
      }
 
      public void FishReList()
-     {
+     {    fish.Clear();
           fishes.Clear();
           rb2D_fishes.Clear();
           for (int i = 0; i < transform.childCount; i++)
@@ -55,9 +55,9 @@ public class FishManager : MonoBehaviour
                float y = UnityEngine.Random.Range( minY,maxY);
                Vector2 vector2 = new Vector2(x, y);
               
-               VARIABLE.transform.DOLookAt(vector2,0.3f).OnComplete(() =>
+               VARIABLE.transform.DOLookAt(vector2,1f).OnComplete(() =>
                {
-                    VARIABLE.AddForce(vector2*1.2f,ForceMode2D.Force);
+                    VARIABLE.AddForce(vector2*2.2f,ForceMode2D.Force);
                }); /* Quaternion.LookRotation(vector2);*/
           }
      }

@@ -38,13 +38,11 @@ public class Snake : MonoBehaviour
     public void SnakeMove(Transform targetposition)
     {
         Follow(_cylinlist[_cylinlist.Count-1], targetposition, snakeSpeed, snakeDistance);
-        for (int i = 0; i < _cylinlist.Count-1; ++i)
+        for (int i = 0; i < _cylinlist.Count - 1; i += 3 )
         { 
             Follow(_cylinlist[i], _cylinlist[i + 1], snakeSpeed, snakeDistance);
             Follow(_cylinlist[i+1], _cylinlist[i + 2], snakeSpeed, snakeDistance);
             Follow(_cylinlist[i+2], _cylinlist[i + 3], snakeSpeed, snakeDistance);
-            i += 2;
-
         }
 
         for (int i =  _cylinlist.Count-1; i >0; --i)
@@ -56,7 +54,10 @@ public class Snake : MonoBehaviour
     public void SnakeFinish()
     {
         float y = snake.position.y;
-        snake.DOMoveY(y+10,10f).SetEase(Ease.Linear).SetDelay(3);
+        snake.DOMoveY(y+10,2f).SetEase(Ease.Linear).SetDelay(2).OnComplete((() =>
+        {
+            BowlController.Instance.FishnetCollect();
+        }));
     }
     public void Follow(Transform _Chaser_gameobject, Transform targetTransform, float speed, float targetDistance)
     {

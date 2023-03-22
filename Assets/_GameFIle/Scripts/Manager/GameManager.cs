@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+ 
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,8 +12,18 @@ public class GameManager : MonoBehaviour
     public float RopeStrength;
 
     public float money;
+
+
+    [SerializeField] private GameObject[] fishes;
+    [SerializeField] private GameObject[] quests;
     private void Awake()
-    {
+    {   
         Instance = this;
+    }
+    private void Start()
+    {
+        int x = Random.Range(0, 3);
+        fishes[x].SetActive(true);
+        quests[x].SetActive(true);
     }
 }

@@ -74,9 +74,9 @@ Material:
     - _EnableConstSizeOutline: 0
     - _EnableTexturedOutline: 0
     - _EnableZSmooth: 1
-    - _FresnelBrightness: 0
-    - _FresnelPower: 0
-    - _FresnelShadowDropoff: 0
+    - _FresnelBrightness: 0.026
+    - _FresnelPower: 1
+    - _FresnelShadowDropoff: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -94,11 +94,11 @@ Material:
     - _RampLevels: 2
     - _RampSmooth: 1
     - _RampThreshold: 0.5
-    - _RimAlpha: 0
-    - _RimDropOff: 0
+    - _RimAlpha: 0.153
+    - _RimDropOff: 0.574
     - _RimMax: 1
     - _RimMin: 0.5
-    - _RimPower: 0
+    - _RimPower: 1
     - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
     - _SpecSmooth: 1
@@ -113,13 +113,13 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FresnelColor: {r: 1, g: 0, b: 0, a: 1}
     - _HColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
     - _HighColor: {r: 1, g: 1, b: 1, a: 1}
     - _LowColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
+    - _RimColor: {r: 1, g: 0, b: 0, a: 1}
     - _SColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_BuildTextureStacks: []

@@ -14,6 +14,7 @@ public class DrawLine : MonoBehaviour
     [Header("Line")]
     [SerializeField] List<Vector2> listVector2;
     [SerializeField] LineRenderer scribbleLineRenderer;
+    [SerializeField] private Transform bubble;
     [SerializeField] LineRenderer Deneme;
     [SerializeField] GameObject snakeHeadpostion;
     [SerializeField] float speed;
@@ -77,6 +78,21 @@ public class DrawLine : MonoBehaviour
             scribbleLineRenderer.SetPosition(pointIndex, _currentMousePos);
             _lastMousePos = _currentMousePos;
             UIManager.Instance.pencilFill.fillAmount -= 0.01f;
+            
+            
+            Vector3 lineposition = _currentMousePos;
+            float xf = lineposition.x;
+            float yf= lineposition.y;
+            float zf = lineposition.z; 
+            
+            _currentMousePos=new Vector3(xf, yf, zf);
+            
+            float xx = (xf - 0.26f)*12.5f;
+            xx=Mathf.Clamp(xx, -3.5f, 4);
+            Vector3 worldPosition = new Vector3(xx, (y-1.61f)*18.75f, 0);
+            Deneme.positionCount ++;
+            Deneme.SetPosition(pointIndex, worldPosition);
+            bubble.transform.position = worldPosition;
         }
     }
     IEnumerator Path()
@@ -101,10 +117,11 @@ public class DrawLine : MonoBehaviour
         for (int i = 0; i < listVector2.Count; i++)
         {
             snakeHeadpostion.transform.position = listVector2[i];
-            Deneme.positionCount ++;
-            Deneme.SetPosition(i,listVector2[i]);
+            
             yield return new WaitForSeconds(speed);
         }
+
+        Deneme.positionCount = 0;
         scribbleLineRenderer.positionCount = 0;
         listVector2.Clear(); 
         _snake.SnakeFinish();

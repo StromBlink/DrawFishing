@@ -1,25 +1,27 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
-using TMPro;
 using DG.Tweening;
 using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    public int fishLevel=2;
-    [SerializeField] private TMP_Text levelText;
-    [SerializeField] private TMP_Text levelText_2;
-   
-    [SerializeField] private ParticleSystem particleSystem_2;
     [SerializeField] private ParticleSystem runBobble;
     private int ID;
     GameObject _temp;
     private Animator _animator;
+    private bool _iscatch;
+    public enum  FishTyp
+    {   Goldfish,
+        Phrina,
+        Crap,
+        Mercan,
+        rubber
+        
+    }
 
-    private void Start()
-    {
+    public FishTyp fishTyp;
+
+    private void Awake()
+    {   
         _animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
@@ -34,16 +36,49 @@ public class Fish : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("FishingNet"))
-        {  
-            
-            BowlController.Instance.SpawnFish(transform);
+        if (col.CompareTag("FishingNet") && (fishTyp == FishTyp.Goldfish || fishTyp == FishTyp.Crap || fishTyp == FishTyp.Mercan))
+        { if(_iscatch)  return;
+            EscapeAction();
+            transform.SetParent(col.transform);
+            BowlController.Instance.catchFishes.Add(this.transform);
+            _iscatch = true;
+        }
+        if (col.CompareTag("FishingNet") && fishTyp==FishTyp.Phrina)
+        {
+            UIManager.Instance.lose = true;
+            UIManager.Instance.Finish();
+        }
+        if (col.CompareTag("FishingNet") && fishTyp==FishTyp.rubber)
+        {
+            UIManager.Instance.lose = true;
+            UIManager.Instance.Finish();
+        }
+       
+    } 
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.transform.CompareTag("Fish") && fishTyp==FishTyp.Phrina)
+        {   
+            runBobble.Play();
+            Transform target = col.transform;
+            transform.DOLookAt(target.position, 0).OnComplete((() =>
+            {   target.GetChild(3).gameObject.SetActive(true);
+                /*target.GetChild(3).transform.localScale=Vector3.one*300;*/
+                target.GetChild(3).SetParent(null);
+                /*target.GetChild(2).transform.localScale=Vector3.one*1;*/
+                target.GetChild(2).GetComponent<ParticleSystem>().Play();
+                target.GetChild(2).SetParent(null);
+                target.gameObject.SetActive(false);
+              
+            }));
+            transform.DOMove(target.position, 1).SetEase(Ease.OutSine);
         }
     }
+
     public void EscapeAction()
     {
-        float x = _animator.speed;
-        _animator.speed = x * 3;
+        /*float x = _animator.speed;
+        _animator.speed = x * 3;*/
         runBobble.Play();
     }
 
