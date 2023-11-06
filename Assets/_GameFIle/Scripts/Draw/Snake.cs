@@ -90,7 +90,7 @@ public class Snake : MonoBehaviour
             _particules[i].Play();
         } 
         vector2s.Add(intersectionpoint);
-        _meshGenerator.GenerateMesh();
+        /*meshGenerator.GenerateMesh();*/
         _polygonCollider.points = vector2s.ToArray();
         print("Calisti:KesisimPolygonHesaplamasi");
     }

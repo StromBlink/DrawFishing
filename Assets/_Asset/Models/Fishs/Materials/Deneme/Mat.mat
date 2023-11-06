@@ -110,7 +110,7 @@ Material:
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
-    - _Color: {r: 0.8652118, g: 0.879, b: 0, a: 1}
+    - _Color: {r: 0.9843137, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _HColor: {r: 0.9843137, g: 1, b: 0, a: 1}
@@ -118,6 +118,6 @@ Material:
     - _LowColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SColor: {r: 0.67031765, g: 0.681, b: 0, a: 1}
+    - _SColor: {r: 0.8666667, g: 0.4627451, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_BuildTextureStacks: []
